@@ -1,0 +1,84 @@
+Parameters:
+  VPC:
+    Type: String
+  PublicSubnetA:
+    Type: String
+  PublicSubnetC:
+    Type: String
+  TargetGroupPort:
+    Type: String
+    Default: '80'
+
+
+Resources:
+  ListenerHttpsBlue:
+    Properties:
+      DefaultActions:
+        - Type: "forward"
+          TargetGroupArn: !Ref 'TargetGroupBlue'
+      LoadBalancerArn: !Ref 'LoadBalancerBlue'
+      Port: 80
+      Protocol: HTTP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  LoadBalancerBlue:
+    Properties:
+      Name: alb-blue-test
+      SecurityGroups:
+        - !Ref 'SecurityGroup'
+      Subnets:
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetC
+      Scheme: 'internet-facing'
+      Type: 'application'
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+
+  ListenerHttpsGreen:
+    Properties:
+      DefaultActions:
+        - Type: "forward"
+          TargetGroupArn: !Ref 'TargetGroupGreen'
+      LoadBalancerArn: !Ref 'LoadBalancerGreen'
+      Port: 80
+      Protocol: HTTP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  LoadBalancerGreen:
+    Properties:
+      Name: alb-green-test
+      SecurityGroups:
+        - !Ref 'SecurityGroup'
+      Subnets:
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetC
+      Scheme: 'internet-facing'
+      Type: 'application'
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+
+  SecurityGroup:
+    Properties:
+      GroupDescription: !Sub alb-sg-blue-green-test
+      SecurityGroupIngress:
+        # http
+        - CidrIp: '0.0.0.0/0'
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+      VpcId: !Ref VPC
+    Type: AWS::EC2::SecurityGroup
+
+  TargetGroupBlue:
+    Properties:
+      Name: alb-tg-blue-test
+      Port: !Sub ${TargetGroupPort}
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VPC
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+
+  TargetGroupGreen:
+    Properties:
+      Name: alb-tg-green-test
+      Port: !Sub ${TargetGroupPort}
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VPC
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup

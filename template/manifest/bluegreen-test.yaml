@@ -1,0 +1,97 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: nginx-test
+  labels:
+    app: nginx-test
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: nginx-test
+  template:
+    metadata:
+      labels:
+        app: nginx-test
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: nginx
+        image: nginx:latest
+
+  strategy:
+    blueGreen:
+      autoPromotionEnabled: false
+      activeService: nginx-blue-test
+      previewService: nginx-green-test
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-blue-test
+spec:
+  ports:
+    - name: http
+      protocol: "TCP"
+      port: 80
+      targetPort: 80
+  selector:
+    app: nginx-test
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-green-test
+spec:
+  ports:
+    - name: http
+      protocol: "TCP"
+      port: 80
+      targetPort: 80
+  selector:
+    app: nginx-test
+
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: nginx-blue-tg
+spec:
+  networking:
+    ingress:
+    - from:
+      - ipBlock:
+          cidr: 10.0.0.0/8
+      ports:
+      - port: 80
+        protocol: TCP
+  serviceRef:
+    name: nginx-blue-test
+    port: 80
+  targetType: ip
+  targetGroupARN: # tg arn
+
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: nginx-green-tg
+spec:
+  networking:
+    ingress:
+    - from:
+      - ipBlock:
+          cidr: 10.0.0.0/8
+      ports:
+      - port: 80
+        protocol: TCP
+  serviceRef:
+    name: nginx-green-test
+    port: 80
+  targetType: ip
+  targetGroupARN: # tg arn
+
