@@ -16,4 +16,4 @@ jobs:
       - uses: docker://ghcr.io/yannh/kubeconform:master
         with:
           entrypoint: '/kubeconform'
-          args: "-schema-location default -schema-location '{{ .ResourceKind }}{{ .KindSuffix }}.json' -summary -output json template/manifest/"
+          args: "-summary -schema-location default -schema-location 'schemas/{{ .ResourceKind }}{{ .KindSuffix }}.json' -output json template/manifest"
