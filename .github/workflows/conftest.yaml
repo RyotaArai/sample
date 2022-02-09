@@ -1,0 +1,16 @@
+name: Check manifest
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: instrumenta/conftest-action@master
+      with:
+        files: manifest
+      run: |
+        ls
+        cat policy
