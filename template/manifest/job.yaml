@@ -9,7 +9,7 @@ spec:
   template:
     spec:
       containers:
-      - aaaaaname: nginx
+      - name: nginx
         image: nginx:latest
         command:
           - "echo"
