@@ -11,6 +11,7 @@ jobs:
     - uses: instrumenta/conftest-action@master
       with:
         files: manifest
+    - name check policy
       run: |
         ls
         cat policy
