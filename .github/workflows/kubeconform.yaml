@@ -1,4 +1,4 @@
-name: Update Secret Manager
+name: Check manifest
 
 on:
   push:
@@ -16,4 +16,4 @@ jobs:
       - uses: docker://ghcr.io/yannh/kubeconform:master
         with:
           entrypoint: '/kubeconform'
-          args: "-summary -output json template/manifest/"
+          args: "-summary -output json template/manifest/job.yaml"

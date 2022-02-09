@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: update-api-storage-
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      serviceAccountName: devops-admin
+      containers:
+      - name: update-api
+        image: 583565938041.dkr.ecr.ap-northeast-1.amazonaws.com/mercury-devops:resource-hooks
+        command:
+          - "python"
+          - "--version"
+        resources:
+          requests:
+            memory: 1000M
+            cpu: 1000m
+            ephemeral-storage: 20G
+          limits:
+            memory: 1000M
+            cpu: 1000m
+            ephemeral-storage: 20G
+      restartPolicy: OnFailure
+  backoffLimit: 1
