@@ -16,4 +16,4 @@ jobs:
       - uses: docker://ghcr.io/yannh/kubeconform:master
         with:
           entrypoint: '/kubeconform'
-          args: "-summary -output json -schema-location default -schema-location 'schemas/externalsecret-kubernetes-client-v1.json'  template/manifest/external-secret.yaml"
+          args: "-summary -output json -schema-location default -schema-location 'schemas/targetgroupbinding-elbv2-v1beta1.json'  template/manifest/*.yaml"
