@@ -73,7 +73,7 @@ spec:
     name: nginx-blue-test
     port: 80
   targetType: ip
-  targetGroupARN: # tg arn
+  targetGroupARN: tgARN
 
 ---
 apiVersion: elbv2.k8s.aws/v1beta1
@@ -93,5 +93,5 @@ spec:
     name: nginx-green-test
     port: 80
   targetType: ip
-  targetGroupARN: # tg arn
+  targetGroupARN: tgARN
 
