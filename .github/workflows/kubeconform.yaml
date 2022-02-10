@@ -17,4 +17,4 @@ jobs:
         with:
           entrypoint: '/kubeconform'
 #          args: "-summary -output json -schema-location default -schema-location 'schemas/targetgroupbinding-elbv2-v1alpha1.json'  template/manifest/bluegreen-test.yaml"
-          args: "-summary -schema-location schemas/* template/manifest/external-secret.yaml"
+          args: "-summary -schema-location schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json template/manifest/external-secret.yaml"
