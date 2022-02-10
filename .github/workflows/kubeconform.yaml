@@ -18,7 +18,7 @@ jobs:
       - uses: docker://ghcr.io/yannh/kubeconform:master
         with:
           entrypoint: '/kubeconform'
-          args: "-summary -schema-location schemas/${{ env.SCHEMAS}} -output json template/manifest"
+          args: "-summary -schema-location ${{ env.SCHEMAS}} -output json template/manifest"
 #          args: "-summary -schema-location default \
 #                 -schema-location schemas/rollout_v1alpha1.json \
 #                 -schema-location schemas/externalsecret_v1.json \
