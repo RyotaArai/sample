@@ -23,4 +23,4 @@ jobs:
                  -schema-location schemas/targetgroupbinding_v1alpha1.json \
                  -schema-location schemas/targetgroupbinding_v1beta1.json \
                  -output json \
-                 template/manifest"
+                 template/manifest/external-secret.yaml"
