@@ -17,7 +17,8 @@ jobs:
         with:
           image: node:18.16.0-alpine3.17
           run: |
-            npm install jquery 
+            npm init
+            npm install jquery --save 
             ls
       - name: Check dir and file
         run: |
