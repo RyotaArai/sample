@@ -17,8 +17,7 @@ jobs:
         with:
           image: node:18.16.0-alpine3.17
           run: |
-            pwd
-            touch test
+            npm install jquery 
             ls
       - name: Check dir and file
         run: |
