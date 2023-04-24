@@ -1,0 +1,17 @@
+name: Run docker image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: node:18.16.0-alpine3.17
+          run: |
+            npm -v
+            ls
