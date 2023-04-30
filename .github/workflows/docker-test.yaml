@@ -9,18 +9,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Check dir and file
+      - name: Check USER
         run: |
-          pwd
-          ls
-      - uses: addnab/docker-run-action@v3
-        with:
-          image: node:18.16.0-alpine3.17
-          run: |
-            npm init
-            npm install jquery --save 
-            ls
-      - name: Check dir and file
-        run: |
-          pwd
-          ls
+          echo $(id -u $USER)
+          echo $(id -g $USER)
