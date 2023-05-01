@@ -10,9 +10,12 @@ jobs:
       user_id: ${{ steps.step1.outputs.USER_ID }}
       group_id: ${{ steps.step1.outputs.USER_GROUP }}
     steps:
-    - run: |
-        echo "USER_ID=$(id -u $USER)" >> $GITHUB_OUTPUT
-        echo "USER_GROUP=$(id -g $USER)" >> $GITHUB_OUTPUT
+      - run: |
+          echo "USER_ID=$(id -u $USER)" >> $GITHUB_OUTPUT
+          echo "USER_GROUP=$(id -g $USER)" >> $GITHUB_OUTPUT
+      - run: |
+          echo ${{ env.user_id }}
+          echo ${{ env.USER_ID }}
 
 
   run-docker-image:
