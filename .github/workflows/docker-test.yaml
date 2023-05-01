@@ -10,7 +10,8 @@ jobs:
       user_id: ${{ steps.step1.outputs.USER_ID }}
       group_id: ${{ steps.step1.outputs.USER_GROUP }}
     steps:
-      - run: |
+      - id: step1
+        run: |
           echo "USER_ID=$(id -u $USER)" >> $GITHUB_OUTPUT
           echo "USER_GROUP=$(id -g $USER)" >> $GITHUB_OUTPUT
 
@@ -34,7 +35,6 @@ jobs:
         # Mount dir to /work in container and reflect user info in build environment to container
         options: -v ${{ github.workspace }}:${{ env.WORK_DIR }} -v /etc/group:/etc/group:ro -v /etc/passwd:/etc/passwd:ro -u ${{ env.USER_ID }}:${{ env.GROUP_ID}}
         run: |
-          echo ${{ env.USER_ID }}:${{ env.GROUP_ID}}
           mkdir ${{ env.WORK_DIR }}/${{ env.PACKAGE_DIR }}
           pip install boto3 -t ${{ env.WORK_DIR }}/${{ env.PACKAGE_DIR }}
           ls -l ${{ env.WORK_DIR }} | grep ${{ env.PACKAGE_DIR }}
