@@ -28,7 +28,9 @@ jobs:
           echo $USER_ID
           echo $USER_GROUP
 
-    test:
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
       - id: step1
         run: |
           ls
