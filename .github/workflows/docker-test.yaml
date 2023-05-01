@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       user_id: ${{ steps.step1.outputs.USER_ID }}
-      group_id: ${{ steps.step2.outputs.USER_GROUP }}
+      group_id: ${{ steps.step1.outputs.USER_GROUP }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -16,30 +16,21 @@ jobs:
       - id: step1
         run: |
           echo "USER_ID=$(id -u $USER)" >> $GITHUB_OUTPUT
-          export USER_ID=$(id -u $USER)
+          echo "USER_GROUP=$(id -g $USER)" >> $GITHUB_OUTPUT
 
       - id: step2
         run: |
-          echo "USER_GROUP=$(id -g $USER)" >> $GITHUB_OUTPUT
-          export USER_GROUP=$(id -g $USER)
-
-      - id: step3
-        run: |
-          ls
-          pwd
-          echo ${{needs.run-docker-image.outputs.user_id}} 
-          echo ${{needs.run-docker-image.outputs.group_id}}
-          echo $USER_ID
-          echo $USER_GROUP
+          echo ${{ env.USER_ID }}
+          echo ${{ env.USER_GROUP }}
 
   test-job:
     runs-on: ubuntu-latest
+    needs: run-docker-image
     steps:
       - id: step1
         run: |
           ls
           pwd
           echo ${{needs.run-docker-image.outputs.user_id}} 
-          echo ${{needs.run-docker-image.outputs.group_id}} 
-          echo $USER_ID
-          echo $USER_GROUP
+          echo ${{needs.run-docker-image.outputs.group_id}}
+
