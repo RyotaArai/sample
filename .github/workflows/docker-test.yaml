@@ -26,14 +26,15 @@ jobs:
     - name: Set up python 3.9
       uses: addnab/docker-run-action@v3
       env:
-        PACKAGE_DIR: /work/python-packages
-        USER_ID: ${{needs.run-docker-image.outputs.user_id}}
-        GROUP_ID: ${{needs.run-docker-image.outputs.group_id}}
+        WORK_DIR: /work
+        PACKAGE_DIR: /python-packages
+        USER_ID: ${{ needs.run-docker-image.outputs.user_id }}
+        GROUP_ID: ${{ needs.run-docker-image.outputs.group_id }}
       with:
         image: python:3.9-slim-buster
         # Mount dir to /work in container and reflect user info in build environment to container
-        options: -v ${{ github.workspace }}:/work -v /etc/group:/etc/group:ro -v /etc/passwd:/etc/passwd:ro -u ${{ env.USER_ID }}:${{ env.GROUP_ID}}
+        options: -v ${{ github.workspace }}:${{ env.WORK_DIR }} -v /etc/group:/etc/group:ro -v /etc/passwd:/etc/passwd:ro -u ${{ env.USER_ID }}:${{ env.GROUP_ID}}
         run: |
-          mkdir ${{ env.PACKAGE_DIR }}
-          pip install boto3 -t ${{ env.PACKAGE_DIR }}
-          ls ${{ env.PACKAGE_DIR }}
+          mkdir ${{ env.WORK_DIR }}/${{ env.PACKAGE_DIR }}
+          pip install boto3 -t ${{ env.WORK_DIR }}/${{ env.PACKAGE_DIR }}
+          ls -l ${{ env.WORK_DIR }} | grep ${{ env.PACKAGE_DIR }}
