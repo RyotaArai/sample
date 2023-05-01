@@ -27,8 +27,8 @@ jobs:
         run: |
           ls
           pwd
-          echo ${{needs.job1.outputs.user_id}} 
-          echo ${{needs.job1.outputs.group_id}}
+          echo ${{needs.run-docker-image.outputs.user_id}} 
+          echo ${{needs.run-docker-image.outputs.group_id}}
           echo $USER_ID
           echo $USER_GROUP
 
@@ -39,7 +39,7 @@ jobs:
         run: |
           ls
           pwd
-          echo ${{needs.job1.outputs.user_id}} 
-          echo ${{needs.job1.outputs.group_id}} 
+          echo ${{needs.run-docker-image.outputs.user_id}} 
+          echo ${{needs.run-docker-image.outputs.group_id}} 
           echo $USER_ID
           echo $USER_GROUP
