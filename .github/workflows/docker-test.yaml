@@ -13,10 +13,6 @@ jobs:
       - run: |
           echo "USER_ID=$(id -u $USER)" >> $GITHUB_OUTPUT
           echo "USER_GROUP=$(id -g $USER)" >> $GITHUB_OUTPUT
-      - run: |
-          echo ${{ env.user_id }}
-          echo ${{ env.USER_ID }}
-
 
   run-docker-image:
     runs-on: ubuntu-latest
@@ -31,8 +27,8 @@ jobs:
       env:
         WORK_DIR: /work
         PACKAGE_DIR: python-packages
-        USER_ID: ${{ needs.run-docker-image.outputs.user_id }}
-        GROUP_ID: ${{ needs.run-docker-image.outputs.group_id }}
+        USER_ID: ${{ needs.set-env.outputs.user_id }}
+        GROUP_ID: ${{ needs.set-env.outputs.group_id }}
       with:
         image: python:3.9-slim-buster
         # Mount dir to /work in container and reflect user info in build environment to container
