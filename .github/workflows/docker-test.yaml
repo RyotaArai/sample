@@ -27,7 +27,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       env:
         WORK_DIR: /work
-        PACKAGE_DIR: /python-packages
+        PACKAGE_DIR: python-packages
         USER_ID: ${{ needs.run-docker-image.outputs.user_id }}
         GROUP_ID: ${{ needs.run-docker-image.outputs.group_id }}
       with:
