@@ -1,0 +1,35 @@
+name: Matrix test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+
+    outputs:
+      list: ${{ steps.get_list.outputs.value }}
+
+    steps:
+    - name: step1
+      id: get_list
+      run: |
+        echo '["${{ github.event.repository.name }}"]' | jq -c
+        list=$(echo '["${{ github.event.repository.name }}"]' | jq -c)
+        echo "value=${list}" >> $GITHUB_OUTPUT
+
+  matrix-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env_name: [uat, preprod]
+        branch: [WIP/kustomize-test1]
+        manifest_file_path: ${{fromJson(needs.set-matrix.outputs.list)}}
+        include:
+        - env_name: preprod
+          branch: WIP/kustomize-test2
+          manifest_file_path: [ test2 ]
+
+    steps:
+    - run: |
+        echo ${{ matrix.env_name }} ${{ matrix.branch }} ${{ matrix.manifest_file_path}}
