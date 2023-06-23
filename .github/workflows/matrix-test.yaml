@@ -23,10 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [develop]
         env_name: [uat, preprod]
-        manifest_file_path: ${{fromJson(needs.set-matrix.outputs.list)}}
+        branch: [develop]
+#        manifest_file_path: ${{fromJson(needs.set-matrix.outputs.list)}}
         include:
+        - manifest_file_path: ${{ github.event.repository.name }}
         - env_name: preprod
           branch: maint-test
           manifest_file_path: common/xxx/xxx.yaml
