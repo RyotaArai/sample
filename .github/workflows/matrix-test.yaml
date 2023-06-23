@@ -24,13 +24,12 @@ jobs:
     strategy:
       matrix:
         env_name: [uat, preprod]
-        branch: [WIP/kustomize-test1]
+        branch: [develop]
+        manifest_file_path: ${{fromJson(needs.set-matrix.outputs.list)}}
         include:
-        - manifest_file_path: ${{fromJson(needs.set-matrix.outputs.list)}}
-
         - env_name: preprod
-          branch: WIP/kustomize-test2
-          manifest_file_path: [ test2 ]
+          branch: maint-test
+          manifest_file_path: common/xxx/xxx.yaml
 
     steps:
     - run: |
