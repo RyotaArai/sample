@@ -23,8 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        env_name: [uat, preprod]
         branch: [develop]
+        env_name: [uat, preprod]
         manifest_file_path: ${{fromJson(needs.set-matrix.outputs.list)}}
         include:
         - env_name: preprod
