@@ -1,11 +1,11 @@
 name: Check manifest
 
 on:
-  push:
-    branches:
-    - main
-    paths-ignore:
-    - '.github/**'
+#  push:
+#    branches:
+#    - main
+#    paths-ignore:
+#    - '.github/**'
   workflow_dispatch:
 
 jobs:
