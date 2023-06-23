@@ -19,6 +19,7 @@ jobs:
         echo "value=${list}" >> $GITHUB_OUTPUT
 
   matrix-test:
+    needs: set-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
