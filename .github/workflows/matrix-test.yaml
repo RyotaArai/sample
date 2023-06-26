@@ -21,12 +21,13 @@ jobs:
 
 
   matrix-test:
+    needs: set-env
     runs-on: ubuntu-latest
     strategy:
       matrix:
         env_name: [uat, preprod, prod]
         include:
-        - manifest_file_path: overlay/${{ needs.set-env.outputs.eks_cluster_location }}/${{ github.event.repository.name }}/patch.yaml
+        - manifest_file_path: overlay/uat/${{ needs.set-env.outputs.eks_cluster_location }}/${{ github.event.repository.name }}/patch.yaml
         - branch: develop
 
         - branch: maint-test
