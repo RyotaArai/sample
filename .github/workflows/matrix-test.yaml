@@ -14,9 +14,9 @@ jobs:
     - id: set_value
       run: |
         if [ {{ github.event.repository.name }} = "mercury-publisher" ] || [ {{ github.event.repository.name }} = "mercury-transfer-gateway" ]; then
-          echo "value=customer" >> $GITHUB_OUTPUT
+          echo "eks_cluster_location=customer" >> $GITHUB_OUTPUT
         else
-          echo "value=common" >> $GITHUB_OUTPUT
+          echo "eks_cluster_location=common" >> $GITHUB_OUTPUT
         fi
 
 
