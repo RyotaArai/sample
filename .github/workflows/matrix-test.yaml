@@ -4,21 +4,37 @@ on:
   workflow_dispatch:
 
 jobs:
+  set-env:
+    runs-on: ubuntu-latest
+
+    outputs:
+      eks_cluster_location: ${{ steps.set_value.outputs.eks_cluster_location }}
+
+    steps:
+    - id: set_value
+      run: |
+        if [ {{ github.event.repository.name }} = "mercury-publisher" ] || [ {{ github.event.repository.name }} = "mercury-transfer-gateway" ]; then
+          echo "value=customer" >> $GITHUB_OUTPUT
+        else
+          echo "value=common" >> $GITHUB_OUTPUT
+        fi
+
+
   matrix-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         env_name: [uat, preprod, prod]
         include:
-        - manifest_file_path: ${{ github.event.repository.name }}
+        - manifest_file_path: overlay/${{ needs.set-env.outputs.eks_cluster_location }}/${{ github.event.repository.name }}/patch.yaml
         - branch: develop
 
         - branch: maint-test
-          manifest_file_path: common/xxx/xxx.yaml
+          manifest_file_path: ${{ needs.set-env.outputs.eks_cluster_location }}/${{ github.event.repository.name }}/${{ github.event.repository.name }}.yaml
           env_name: preprod
 
         - branch: prod-env
-          manifest_file_path: common/xxx/xxx.yaml
+          manifest_file_path: ${{ needs.set-env.outputs.eks_cluster_location }}/${{ github.event.repository.name }}/${{ github.event.repository.name }}.yaml
           env_name: prod
 
     steps:
