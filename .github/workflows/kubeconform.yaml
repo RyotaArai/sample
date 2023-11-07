@@ -21,6 +21,6 @@ jobs:
           kustomize build template/kustomize/overlay/$ENV_NAME |
           kubeconform -summary \
           -schema-location default \
-          -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" \
+          -schema-location "schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json" \
           -output json
         done
