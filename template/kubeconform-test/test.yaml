@@ -1,0 +1,61 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: nginx
+        image: nginx:latest
+
+  strategy:
+    blueGreen:
+      autoPromotionEnabled: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  ports:
+    - name: http
+      protocol: "TCP"
+      port: 80
+      targetPort: 80
+  selector:
+    app: nginx
+
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: nginx-tg
+spec:
+  networking:
+    ingress:
+    - from:
+      - ipBlock:
+          cidr: 10.0.0.0/8
+      ports:
+      - port: 80
+        protocol: TCP
+  serviceRef:
+    name: nginx
+    port: 80
+  targetType: ip
+  targetGroupARN: arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/xxx/xxx
+
