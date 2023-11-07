@@ -13,7 +13,7 @@ jobs:
           #entrypoint: '/kubeconform'
           #args: "-summary -schema-location default -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" -output json template/kubeconform-test"
 
-          entrypoint: ['sh', '-c']
+          entrypoint: 'sh'
           args: [
-          "/kubeconform -summary -schema-location default -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" -output json template/kubeconform-test"
+          "-c /kubeconform -summary -schema-location default -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" -output json template/kubeconform-test"
           ]
