@@ -23,7 +23,8 @@ spec:
 
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
+      activeService: nginx
 
 ---
 apiVersion: v1
