@@ -20,3 +20,4 @@ jobs:
                          -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" 
                          -output json template/kubeconform-test
             "
+          ]
