@@ -22,5 +22,5 @@ jobs:
           kubeconform -summary \
           -schema-location default \
           -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" \
-          -output json \
+          -output json
         done
