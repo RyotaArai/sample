@@ -7,13 +7,20 @@ jobs:
   kubeconform:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker://ghcr.io/yannh/kubeconform:master
-        with:
-          #entrypoint: '/kubeconform'
-          #args: "-summary -schema-location default -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" -output json template/kubeconform-test"
-
-          entrypoint: 'sh'
-          args: [
-          "-c /kubeconform -summary -schema-location default -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" -output json template/kubeconform-test"
-          ]
+    - uses: actions/checkout@v3
+    - uses: yokawasa/action-setup-kube-tools@v0.9.2
+      with:
+        setup-tools: |
+          kubeconform
+          kustomize
+        kubeconform: '0.5.0'
+        kustomize: '5.0.0'
+    - run: |
+        for ENV_NAME in dev stg prod
+        do
+          kustomize build template/kustomize/overlay/$ENV_NAME |
+          kubeconform -summary \
+          -schema-location default \
+          -schema-location \"schemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json\" \
+          -output json \
+        done
