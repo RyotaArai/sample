@@ -24,7 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{fromJson(needs.set-matrix.outputs.matrix)}}
+      matrix:
+        env: ${{fromJson(needs.set-matrix.outputs.matrix)}}
     steps:
       - name: Deploy
         run: |
