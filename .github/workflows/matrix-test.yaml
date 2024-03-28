@@ -26,8 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{fromJson(needs.set-matrix.outputs.matrix)}}
+      matrix: ${{fromJson( ${{ github.event.inputs.env_list }} )}}
     steps:
       - name: Deploy
         run: |
-          echo "env_name ${{ matrix.env_name }}"
+          echo "env_name ${{ matrix.env }}"
