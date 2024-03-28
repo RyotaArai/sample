@@ -17,16 +17,14 @@ jobs:
       - id: create-matrix
         run: |
           env_list="${{ github.event.inputs.env_list }}"
-          matrix_json="[{\"env_name\":\"${env_list//,/'},{\"env_name\":\"'}\"}]"
-          echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
-          echo ${matrix_json}
+          echo "matrix=${env_list}" >> $GITHUB_OUTPUT
 
   deploy:
     needs: set-matrix
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{fromJson( ${{ github.event.inputs.env_list }} )}}
+      matrix: ${{fromJson(needs.set-matrix.outputs.matrix)}}
     steps:
       - name: Deploy
         run: |
