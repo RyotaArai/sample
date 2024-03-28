@@ -9,24 +9,24 @@ on:
         default: 'integration,uat,preprod,prod'
 
 jobs:
-  set-env:
+  set-matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-
+      matrix: ${{ steps.create-matrix.outputs.matrix }}
     steps:
-      - name: Set Matrix
-        id: set-matrix
+      - id: create-matrix
         run: |
-          echo "::set-output name=matrix::{\"env_name\": [${{ github.event.inputs.env_list }}]}"
+          env_list="${{ github.event.inputs.env_list }}"
+          matrix_json="[{\"env_name\":\"${env_list//,/'},{\"env_name\":\"'}\"}]"
+          echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
 
-  matrix-test:
-    needs: set-env
+  deploy:
+    needs: set-matrix
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.set-env.outputs.matrix)}}
+      fail-fast: false
+      matrix: ${{fromJson(needs.set-matrix.outputs.matrix)}}
     steps:
-      - run: |
-          echo env_name: ${{ matrix.env_name }}
-
-
+      - name: Deploy
+        run: |
+          echo "env_name ${{ matrix.env_name }}"
