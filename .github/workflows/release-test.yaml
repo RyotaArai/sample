@@ -12,3 +12,4 @@ jobs:
     - run: |
         echo ${GITHUB_REF##*/}
         echo ${GITHUB_REF}
+        echo  ${{ github.ref_name##*/ }}
