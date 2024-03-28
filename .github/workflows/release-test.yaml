@@ -1,0 +1,14 @@
+name: release test
+on:
+  push:
+    branches:
+    - 'release/**'
+    - 'release-*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo ${GITHUB_REF##*/}
+        echo ${GITHUB_REF}
