@@ -19,6 +19,7 @@ jobs:
           env_list="${{ github.event.inputs.env_list }}"
           matrix_json="[{\"env_name\":\"${env_list//,/'},{\"env_name\":\"'}\"}]"
           echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
+          echo ${matrix_json}
 
   deploy:
     needs: set-matrix
