@@ -1,0 +1,30 @@
+name: Dynamic Matrix Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      env_names:
+        description: 'Comma-separated list of environment names (e.g. "dev1,integration")'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env_name: ${{ fromJson(github.event.inputs.env_names) }}
+    steps:
+    - run: echo ${{ matrix.env_name }}
+    - name: Set environment specific variables
+      id: vars
+      run: |
+        if [ "${{ matrix.env_name }}" == "dev1" ]; then
+          echo "::set-output name=BRANCH::develop"
+          echo "::set-output name=MANIFEST_FILE_PATH::overlay/dev1/customer/mercury-lambda-updater/${{ github.event.repository.name }}-updater/patch.yaml"
+        elif [ "${{ matrix.env_name }}" == "integration" ]; then
+          echo "::set-output name=BRANCH::develop"
+          echo "::set-output name=MANIFEST_FILE_PATH::overlay/integration/customer/mercury-lambda-updater/${{ github.event.repository.name }}-updater/patch.yaml"
+        fi
+    - run: |
+        echo "Branch: ${{ steps.vars.outputs.BRANCH }}"
+        echo "Manifest file path: ${{ steps.vars.outputs.MANIFEST_FILE_PATH }}"
