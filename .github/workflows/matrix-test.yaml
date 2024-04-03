@@ -10,7 +10,7 @@ on:
       branch:
         type: string
         required: true
-        default: ${ GITHUB_REF }
+        default: ${{ github.ref }}
 
 jobs:
   set-matrix:
