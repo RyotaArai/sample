@@ -7,6 +7,10 @@ on:
         type: string
         required: true
         default: 'integration,uat,preprod,prod'
+      branch:
+        type: string
+        required: true
+        default: ${ GITHUB_REF }
 
 jobs:
   set-matrix:
@@ -41,5 +45,6 @@ jobs:
           fi
       - run: |
           echo "Branch: ${{ env.BRANCH }}"
+          echo "${{ github.event.inputs.env_list }}"
           echo "Manifest file path: ${{ env.MANIFEST_FILE_PATH }}"
   
