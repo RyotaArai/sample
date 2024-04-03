@@ -29,6 +29,17 @@ jobs:
       matrix:
         env: ${{fromJson(needs.set-matrix.outputs.matrix)}}
     steps:
-      - name: Deploy
+      - run: echo ${{ matrix.env }}
+      - name: Set environment specific variables
         run: |
-          echo "env_name ${{ matrix.env }}"
+          if [ "${{ matrix.env }}" == "dev1" ]; then
+            echo "BRANCH=develop" >> $GITHUB_ENV
+            echo "MANIFEST_FILE_PATH=overlay/dev1/customer/mercury-lambda-updater/${{ github.event.repository.name }}-updater/patch.yaml" >> $GITHUB_ENV
+          elif [ "${{ matrix.env }}" == "integration" ]; then
+            echo "BRANCH=develop" >> $GITHUB_ENV
+            echo "MANIFEST_FILE_PATH=overlay/integration/customer/mercury-lambda-updater/${{ github.event.repository.name }}-updater/patch.yaml" >> $GITHUB_ENV
+          fi
+      - run: |
+          echo "Branch: ${{ env.BRANCH }}"
+          echo "Manifest file path: ${{ env.MANIFEST_FILE_PATH }}"
+  
