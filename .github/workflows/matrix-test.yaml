@@ -24,24 +24,27 @@ jobs:
   deploy:
     needs: set-matrix
     runs-on: ubuntu-latest
-    if: >
-      matrix.env == 'dev1'
     strategy:
       fail-fast: false
       matrix:
         env: ${{fromJson(needs.set-matrix.outputs.matrix)}}
     steps:
       - run: echo ${{ matrix.env }}
-      - name: Set environment specific variables
+      - name: Check deployment conditions
+        id: check-conditions
         run: |
-          if [ "${{ matrix.env }}" == "dev1" ]; then
-            echo "BRANCH=develop" >> $GITHUB_ENV
-            echo "MANIFEST_FILE_PATH=overlay/dev1/customer/mercury-lambda-updater/${{ github.event.repository.name }}-updater/patch.yaml" >> $GITHUB_ENV
-          elif [ "${{ matrix.env }}" == "integration" ]; then
-            echo "BRANCH=develop" >> $GITHUB_ENV
-            echo "MANIFEST_FILE_PATH=overlay/integration/customer/mercury-lambda-updater/${{ github.event.repository.name }}-updater/patch.yaml" >> $GITHUB_ENV
+          if [[ (! "${{ github.ref_name }}" = release* && ! "${{ github.ref_name }}" = hotfix* && \
+             ( "${{ matrix.env_name }}" == "dev1" || "${{ matrix.env_name }}" == "integration" )) || \
+             (( "${{ github.ref_name }}" = release* || "${{ github.ref_name }}" = hotfix*) && \
+             "${{ matrix.env_name }}" != "dev1" && "${{ matrix.env_name }}" != "integration") ]]; then
+            echo "RELEASE_FLG=true" >> $GITHUB_ENV
+          else
+            echo "RELEASE_FLG=false" >> $GITHUB_ENV
           fi
-      - run: |
+      
+      - name: Check environment variables
+        if: env.RELEASE_FLG == 'true'
+        run: |
           echo "Branch: ${{ env.BRANCH }}"
           echo "Manifest file path: ${{ env.MANIFEST_FILE_PATH }}"
   
