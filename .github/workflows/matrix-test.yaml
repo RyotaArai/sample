@@ -24,6 +24,8 @@ jobs:
   deploy:
     needs: set-matrix
     runs-on: ubuntu-latest
+    if: >
+      matrix.env == 'dev1'
     strategy:
       fail-fast: false
       matrix:
