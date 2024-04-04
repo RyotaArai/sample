@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        env: ${{fromJson(needs.set-matrix.outputs.matrix)}}
+        env_name: ${{fromJson(needs.set-matrix.outputs.matrix)}}
     steps:
       - run: echo ${{ matrix.env }}
       - name: Check deployment conditions
@@ -45,6 +45,5 @@ jobs:
       - name: Check environment variables
         if: env.RELEASE_FLG == 'true'
         run: |
-          echo "Branch: ${{ env.BRANCH }}"
-          echo "Manifest file path: ${{ env.MANIFEST_FILE_PATH }}"
+          echo ${{ matrix.env_name }}
   
