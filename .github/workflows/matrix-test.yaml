@@ -11,6 +11,8 @@ on:
 jobs:
   set-matrix:
     runs-on: ubuntu-latest
+    env:
+      ENV: test
     outputs:
       matrix: ${{ steps.create-matrix.outputs.matrix }}
     steps:
@@ -20,6 +22,14 @@ jobs:
           matrix_json="[\"${env_list//,/'","'}\"]"
           echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
           echo $matrix_json
+
+  env_test:
+    needs: set-matrix    
+    runs-on: ubuntu-latest
+    steps:
+      - id: env_test
+        run: |
+          echo ${{ needs.set-matrix.env.ENV }}
 
   deploy:
     needs: set-matrix
