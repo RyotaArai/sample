@@ -10,7 +10,7 @@ on:
     inputs:
       env_list:
         type: string
-        required: true
+        required: false
         default: 'integration,uat,preprod,prod'
 
 jobs:
