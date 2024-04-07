@@ -10,7 +10,7 @@ on:
     inputs:
       env_list:
         type: string
-        required: false
+        required: true
         default: 'integration,uat,preprod,prod'
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - id: create-matrix
         run: |
-          env_list="${{ github.event.inputs.env_list }}"
+          env_list="${{ github.event.inputs.env_list || 'integration,uat,preprod,prod' }}"
           matrix_json="[\"${env_list//,/'","'}\"]"
           echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
           echo $matrix_json
