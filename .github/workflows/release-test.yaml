@@ -1,9 +1,9 @@
 name: release test
 on:
-  push:
-    branches:
-    - 'release/**'
-    - 'release-**'
+  # push:
+  #   branches:
+  #   - 'release/**'
+  #   - 'release-**'
   workflow_dispatch:
 
 jobs:
