@@ -4,6 +4,7 @@ on:
     branches:
     - 'release/**'
     - 'release-**'
+  workflow_dispatch:
 
 jobs:
   test:
