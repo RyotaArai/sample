@@ -1,6 +1,11 @@
 name: Matrix test
 
 on:
+  push:
+    branches:
+    - 'release/**'
+    - develop
+
   workflow_dispatch:
     inputs:
       env_list:
