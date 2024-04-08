@@ -28,7 +28,7 @@ jobs:
     steps:
       - id: create-matrix
         run: |
-          env_list="${{ github.event.inputs.env_list }}"
+          env_list="${{ github.event.inputs.env_list || 'dev1,integration,uat,preprod,prod' }}"
           matrix_json="[\"${env_list//,/'","'}\"]"
           echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
           echo $matrix_json
@@ -50,6 +50,7 @@ jobs:
         env_name: ${{fromJson(needs.set-matrix.outputs.matrix)}}
     steps:
     - name: Check deployment conditions
+      id: check-deploy
       uses: RyotaArai/sample/composite_actions/check_deploy@main
       with:
         ref_name: ${{ github.ref_name }}
@@ -57,10 +58,10 @@ jobs:
 
     - name: Check deployment_flg
       run: |
-        echo ${{ steps.deploy.outputs.deployment_flg }}
+        echo ${{ steps.check-deploy.outputs.deployment_flg }}
 
     - name: Check environment variables
-      if: ${{ steps.deploy.outputs.deployment_flg }} == 'true'
+      if: ${{ steps.check-deploy.outputs.deployment_flg }} == 'true'
       run: |
         echo ${{ matrix.env_name }}
   
