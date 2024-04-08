@@ -59,6 +59,7 @@ jobs:
       if: ${{ steps.deploy.outputs.deployment_flg }} == 'true'
       run: |
         echo ${{ matrix.env_name }}
-        echo "BRANCH=${{ github.event.inputs.manifest_branch || ${{ github.ref_name }} }}" >> $GITHUB_ENV
+        echo "BRANCH=${{ github.event.inputs.manifest_branch || $GITHUB_REF_NAME }}" >> $GITHUB_ENV
+        echo $BRANCH
         echo ${{ env.BRANCH }}
   
