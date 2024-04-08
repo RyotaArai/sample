@@ -7,7 +7,7 @@ inputs:
     required: true
 
 outputs:
-  release_flg:
+  deployment_flg:
     description: 'Flag whether to deploy or not'
 
 runs:
@@ -23,8 +23,8 @@ runs:
          # Execute if it's a release or hotfix branch, but not for the dev1 or integration environments.
          (( "${{ inputs.ref_name }}" = release* || "${{ inputs.ref_name }}" = hotfix*) && \
          "${{ inputs.env_name }}" != "dev1" && "${{ inputs.env_name }}" != "integration") ]]; then
-        echo "release_flg=true" >> $GITHUB_ENV
+        echo "deployment_flg=true" >> $GITHUB_ENV
       else
-        echo "release_flg=false" >> $GITHUB_ENV
+        echo "deployment_flg=false" >> $GITHUB_ENV
       fi
     shell: bash
