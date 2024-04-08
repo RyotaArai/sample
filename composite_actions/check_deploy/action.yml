@@ -9,11 +9,13 @@ inputs:
 outputs:
   deployment_flg:
     description: 'Flag whether to deploy or not'
+    value: ${{ steps.check-deploy.outputs.deployment_flg }}
 
 runs:
   using: "composite"
   steps:
-  - run: |
+  - id: check-deploy
+    run: |
       if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] || \
   
          # Execute if it's a develop branch and the environment is either dev1 or integration.
