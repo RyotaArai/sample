@@ -61,7 +61,7 @@ jobs:
         echo ${{ steps.check-deploy.outputs.deployment_flg }}
 
     - name: Check environment variables
-      if: ${{ steps.check-deploy.outputs.deployment_flg }} == 'true'
+      if: ${{ steps.check-deploy.outputs.deployment_flg == 'true' }}
       run: |
         echo ${{ matrix.env_name }}
   
