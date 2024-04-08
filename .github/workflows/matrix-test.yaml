@@ -12,6 +12,10 @@ on:
         type: string
         required: true
         default: 'integration,uat,preprod,prod'
+      manifest_branch:
+        type: string
+        required: true
+        default: develop
 
 env:
   ENV: test
@@ -55,4 +59,6 @@ jobs:
       if: ${{ steps.deploy.outputs.deployment_flg }} == 'true'
       run: |
         echo ${{ matrix.env_name }}
+        echo "BRANCH=${{ github.event.inputs.manifest_branch || ${{ github.ref_name }} }}" >> $GITHUB_ENV
+        echo ${{ env.BRANCH }}
   
