@@ -51,13 +51,6 @@ jobs:
         ref_name: ${{ github.ref_name }}
         env_name: ${{ matrix.env_name }}
 
-    - name: Set Deployment Flag
-      run: |
-        echo "deployment_flg=${{ steps.deploy.outputs.deployment_flg }}" >> $GITHUB_ENV
-        echo ${{ env.deployment_flg }}
-        echo env.deployment_flg
-      
-
     - name: Check environment variables
       if: ${{ steps.deploy.outputs.deployment_flg }} == 'true'
       run: |
