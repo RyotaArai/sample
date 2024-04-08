@@ -17,11 +17,11 @@ runs:
       if [[ "$GITHUB_EVENT_NAME" != "workflow_dispatch" || \
 
          # Execute if it's not a release or hotfix branch and the environment is either dev1 or integration.
-         (! "${{ inputs.ref_name }}" = release* && ! "${{ inputs.ref_name }}" = hotfix* && \
+         (! "${{ inputs.ref_name }}" == release* && ! "${{ inputs.ref_name }}" == hotfix* && \
          ( "${{ inputs.env_name }}" == "dev1" || "${{ inputs.env_name }}" == "integration" )) || \
 
          # Execute if it's a release or hotfix branch, but not for the dev1 or integration environments.
-         (( "${{ inputs.ref_name }}" = release* || "${{ inputs.ref_name }}" = hotfix*) && \
+         (( "${{ inputs.ref_name }}" == release* || "${{ inputs.ref_name }}" == hotfix*) && \
          "${{ inputs.env_name }}" != "dev1" && "${{ inputs.env_name }}" != "integration") ]]; then
         echo "deployment_flg=true" >> $GITHUB_ENV
       else
