@@ -14,23 +14,18 @@ runs:
   using: "composite"
   steps:
   - run: |
-      echo $GITHUB_EVENT_NAME
-      if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
-        echo "deployment_flg=true" >> $GITHUB_OUTPUT
-        exit
-      fi
-
+      if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] || \
+  
          # Execute if it's a develop branch and the environment is either dev1 or integration.
-      if [[ ( "${{ inputs.ref_name }}" == develop-test && \
+         [[ ( "${{ inputs.ref_name }}" == develop && \
             ( "${{ inputs.env_name }}" == "dev1" || "${{ inputs.env_name }}" == "integration" )) ]] || \
       
          # Execute if it's a release or hotfix branch, but not for the dev1 or integration environments.
          [[ (( "${{ inputs.ref_name }}" = release/* || "${{ inputs.ref_name }}" = hotfix/* ) && \
                "${{ inputs.env_name }}" != "dev1" && "${{ inputs.env_name }}" != "integration") ]]; then
-
+  
         echo "deployment_flg=true" >> $GITHUB_OUTPUT
       else
         echo "deployment_flg=false" >> $GITHUB_OUTPUT
       fi
-      echo ${{ env.deployment_flg }}
     shell: bash
