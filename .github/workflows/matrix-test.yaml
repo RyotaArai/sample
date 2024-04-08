@@ -13,8 +13,8 @@ on:
         required: true
         default: 'integration,uat,preprod,prod'
 
-  env:
-    ENV: test
+env:
+  ENV: test
 
 jobs:
   set-matrix:
