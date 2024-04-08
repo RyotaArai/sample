@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
   - run: |
-      if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" || \
+      if [[ "$GITHUB_EVENT_NAME" != "workflow_dispatch" || \
 
          # Execute if it's not a release or hotfix branch and the environment is either dev1 or integration.
          (! "${{ inputs.ref_name }}" = release* && ! "${{ inputs.ref_name }}" = hotfix* && \
