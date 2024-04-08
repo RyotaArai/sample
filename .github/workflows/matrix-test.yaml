@@ -13,11 +13,12 @@ on:
         required: true
         default: 'integration,uat,preprod,prod'
 
+  env:
+    ENV: test
+
 jobs:
   set-matrix:
     runs-on: ubuntu-latest
-    env:
-      ENV: test
     outputs:
       matrix: ${{ steps.create-matrix.outputs.matrix }}
     steps:
@@ -34,7 +35,7 @@ jobs:
     steps:
       - id: env_test
         run: |
-          echo ${{ needs.set-matrix.env.ENV }}
+          echo ${{ env.ENV }}
 
   deploy:
     needs: set-matrix
@@ -54,7 +55,7 @@ jobs:
       run: echo "deployment_flg=${{ steps.deploy.outputs.deployment_flg }}" >> $GITHUB_ENV
 
     - name: Check environment variables
-      if: env.deployment_flg == 'true'
+      if: env.deployment_flg == "true"
       run: |
         echo ${{ matrix.env_name }}
   
