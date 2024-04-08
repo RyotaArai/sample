@@ -55,11 +55,12 @@ jobs:
         ref_name: ${{ github.ref_name }}
         env_name: ${{ matrix.env_name }}
 
+    - name: Check deployment_flg
+      run: |
+        echo ${{ steps.deploy.outputs.deployment_flg }}
+
     - name: Check environment variables
       if: ${{ steps.deploy.outputs.deployment_flg }} == 'true'
       run: |
         echo ${{ matrix.env_name }}
-        echo "BRANCH=${{ github.event.inputs.manifest_branch || $GITHUB_REF_NAME }}" >> $GITHUB_ENV
-        echo $BRANCH
-        echo ${{ env.BRANCH }}
   
