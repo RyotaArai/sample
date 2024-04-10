@@ -5,6 +5,9 @@ inputs:
     required: true
   env_name:
     required: true
+  bucket:
+    default: s3://nh2024-test-results/${{ github.event.repository.name }}
+    required: false  
 
 outputs:
   deployment_flg:
@@ -16,6 +19,7 @@ runs:
   steps:
   - id: check-deploy
     run: |
+      echo ${{ inputs.bucket }}
       if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] || \
   
          # Execute if it's a develop branch and the environment is either dev1 or integration.
