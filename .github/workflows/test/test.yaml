@@ -1,0 +1,15 @@
+name: Update Secret Manager
+
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: echo
+      run: |
+        echo hello
