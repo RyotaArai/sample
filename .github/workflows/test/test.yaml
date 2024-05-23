@@ -1,4 +1,4 @@
-name: Update Secret Manager
+name: Test
 
 on:
   push:
